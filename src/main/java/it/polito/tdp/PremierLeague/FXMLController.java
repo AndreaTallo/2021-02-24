@@ -47,17 +47,68 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	txtResult.clear();
+    	Match m = cmbMatch.getValue();
+    	if(m == null) {
+    		txtResult.appendText("Seleziona un match!");
+    		return ;
+    	}
     	
+    	this.model.creaGrafo(m);
+    	
+    	txtResult.appendText("GRAFO CREATO\n");
+    	txtResult.appendText("# VERTICI: " + this.model.nVertici() + "\n");
+    	txtResult.appendText("# ARCHI: " + this.model.nArchi() + "\n");
+
     }
 
     @FXML
     void doGiocatoreMigliore(ActionEvent event) {    	
+    	txtResult.clear();
+    	Match m = cmbMatch.getValue();
+    	if(m == null) {
+    		txtResult.appendText("Seleziona un match!");
+    		return ;
+    	}
     	
-    }
+    	
+    	txtResult.appendText("GIOCATORE MIGLIORE:\n" + this.model.calcolaGiocatoreMigliore()+" "+this.model.getPesoMigliore());
+    	}
+    
     
     @FXML
     void doSimula(ActionEvent event) {
-
+    	
+    	
+    	
+    	
+    	Match m = cmbMatch.getValue();
+    	
+    	if(m == null) {
+    		txtResult.appendText("Seleziona un match!");
+    		return ;
+    	}
+try {
+	String s=txtN.getText();
+	if(s==null) {
+		txtResult.appendText("Inserisci un numero!");
+		return ;
+	}
+	   // model.creaGrafo(m);
+		//model.calcolaGiocatoreMigliore();
+		int i=Integer.parseInt(s);
+		model.simula(i);
+		
+		txtResult.setText(model.getNumeroGolCasa()+" "+model.getNumeroGolTrasferta()+"\n"+"Espulsi"+"\n"+
+		model.getNumeroEspulsiCasa()+" "+model.getNumeroEspulsiTrasferta());
+		
+		
+	
+	
+}catch(NumberFormatException nfe) {
+	
+}
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -73,5 +124,6 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	cmbMatch.getItems().addAll(model.getListaMatch());
     }
 }
